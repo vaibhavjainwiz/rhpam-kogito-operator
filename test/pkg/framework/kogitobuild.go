@@ -19,7 +19,7 @@ import (
 
 	"github.com/kiegroup/kogito-operator/core/kogitobuild"
 
-	"github.com/kiegroup/kogito-operator/api"
+	api "github.com/kiegroup/kogito-operator/apis"
 	v1 "github.com/kiegroup/rhpam-kogito-operator/api/v1"
 
 	"github.com/kiegroup/kogito-operator/core/framework"
@@ -102,15 +102,9 @@ func GetKogitoBuildRuntimeImage(kogitoBuild *v1.KogitoBuild) string {
 // getKogitoBuildImage returns a build image with defaults set
 func getKogitoBuildImage(imageName string) string {
 	image := api.Image{
-		Name: imageName,
-		Tag:  config.GetBuildImageVersion(),
-	}
-
-	registry := config.GetBuildImageRegistry()
-	if len(config.GetBuildImageNamespace()) > 0 {
-		image.Domain = fmt.Sprintf("%s/%s", registry, config.GetBuildImageNamespace())
-	} else {
-		image.Domain = registry
+		Domain: config.GetBuildImageRegistry(),
+		Name:   imageName,
+		Tag:    config.GetBuildImageVersion(),
 	}
 
 	// Update image name with suffix if provided
